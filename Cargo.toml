@@ -1,0 +1,13 @@
+[package]
+name = "leibniz_node"
+version = "2.0.0"
+edition = "2021"
+
+[dependencies]
+rayon = "1.8"
+clap = { version = "4.0", features = ["derive"] }
+bitvec = "1.0"
+tiny-keccak = { version = "2.0", features = ["sha3"] }
+rand = "0.8"
+sled = { version = "0.34", features = ["compression"] }
+regex = "1.10"
