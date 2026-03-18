@@ -4,7 +4,7 @@ BOOKS_DIR = .\books
 VAULT = sovereign_vault
 
 # Source Files
-DICT_RAW = $(BOOKS_DIR)\dictionary.txt
+DICT_RAW = .\dictionart\dictionary.txt
 DICT_CLEAN = $(BOOKS_DIR)\dictionary_cleaned.txt
 KJV = $(BOOKS_DIR)\kjv.txt
 PROSE = $(BOOKS_DIR)\prose.txt
@@ -50,20 +50,20 @@ init: clean_db
 	@echo "--- Step 1: Cleaning Webster's Dictionary ---"
 	$(EXE) dictionary $(DICT_RAW)
 	@echo "--- Step 3: Ingesting KJV (ID: 2) ---"
-	@for %%f in ($(L1_FILES)) do $(EXE) ingest %%f --label-id 1
+	@for %%f in ($(L1_FILES)) do $(EXE) ingest %%f --epochs 2
 	@echo "--- Step 3: Ingesting KJV (ID: 2) ---"
-	@for %%f in ($(L2_FILES)) do $(EXE) ingest %%f --label-id 2
+	@for %%f in ($(L2_FILES)) do $(EXE) ingest %%f --epochs 2
 	@echo "--- Step 4: Ingesting Prose (ID: 3) ---"
-	@for %%f in ($(L3_FILES)) do $(EXE) ingest %%f --label-id 3
+	@for %%f in ($(L3_FILES)) do $(EXE) ingest %%f --epochs 2
 	@echo "--- Step 5: Ingesting Faraday (ID: 4) ---"
-	@for %%f in ($(L4_FILES)) do $(EXE) ingest %%f --label-id 4
+	@for %%f in ($(L4_FILES)) do $(EXE) ingest %%f --epochs 2
 	@echo "--- Initialization Complete ---"
 	@echo "--- Ingesting Level 5: Modern Theoretical ---"
-	@for %%f in ($(L5_FILES)) do $(EXE) ingest %%f --label-id 5
+	@for %%f in ($(L5_FILES)) do $(EXE) ingest %%f --epochs 2
 	@echo "--- Ingesting Level 6: Dialogues/Interviews (ID: 6) ---"
-	@for %%f in ($(L6_FILES)) do $(EXE) ingest %%f --label-id 6
+	@for %%f in ($(L6_FILES)) do $(EXE) ingest %%f --epochs 2
 	@echo "--- Ingesting Level 7: Dialogues/Interviews (ID: 7) ---"
-	@for %%f in ($(L7_FILES)) do $(EXE) ingest %%f --label-id 7
+	@for %%f in ($(L7_FILES)) do $(EXE) ingest %%f --epochs 2
 
 # Prune command: usage 'make prune T=2' (defaults to threshold 1)
 T ?= 1
