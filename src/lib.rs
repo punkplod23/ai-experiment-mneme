@@ -79,6 +79,9 @@ pub enum Commands {
         /// Legacy routing label id (retained for script compatibility)
         #[arg(long)]
         label_id: Option<usize>,
+        /// Force CPU for chat even if CUDA is available
+        #[arg(long)]
+        cpu: bool,
     },
 }
 
@@ -405,8 +408,14 @@ pub fn run() -> Result<()> {
             system,
             top_k,
             label_id,
+            cpu,
         } => {
-            let device = Device::Cpu;
+            let device = if cpu {
+                Device::Cpu
+            } else {
+                Device::cuda_if_available(0)?
+            };
+            println!("[Sovereign Hardware: {:?}]", device);
 
             if !Path::new(SAVE_FILE).exists() {
                 bail!(

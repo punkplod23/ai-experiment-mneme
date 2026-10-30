@@ -110,8 +110,8 @@ impl MambaBlock {
 
         // 2. Input projection into (x, z)
         let xz = self.in_proj.forward(&u_norm)?;
-        let x = xz.narrow(D::Minus1, 0, self.cfg.d_inner)?;
-        let z = xz.narrow(D::Minus1, self.cfg.d_inner, self.cfg.d_inner)?;
+        let x = xz.narrow(D::Minus1, 0, self.cfg.d_inner)?.contiguous()?;
+        let z = xz.narrow(D::Minus1, self.cfg.d_inner, self.cfg.d_inner)?.contiguous()?;
 
         // 3. Causal 1D Depthwise Convolution
         let pad = Tensor::zeros(
@@ -140,13 +140,13 @@ impl MambaBlock {
 
         // 4. Selective Projections: dt, B, C
         let x_dbl = self.x_proj.forward(&x_conv)?;
-        let dt_raw = x_dbl.narrow(D::Minus1, 0, self.cfg.dt_rank)?;
-        let b_proj = x_dbl.narrow(D::Minus1, self.cfg.dt_rank, self.cfg.d_state)?;
+        let dt_raw = x_dbl.narrow(D::Minus1, 0, self.cfg.dt_rank)?.contiguous()?;
+        let b_proj = x_dbl.narrow(D::Minus1, self.cfg.dt_rank, self.cfg.d_state)?.contiguous()?;
         let c_proj = x_dbl.narrow(
             D::Minus1,
             self.cfg.dt_rank + self.cfg.d_state,
             self.cfg.d_state,
-        )?;
+        )?.contiguous()?;
 
         let dt = softplus(&self.dt_proj.forward(&dt_raw)?)?;
 
@@ -200,8 +200,8 @@ impl MambaBlock {
 
         // 2. Input projection into (x, z)
         let xz = self.in_proj.forward(&u_norm)?;
-        let x = xz.narrow(D::Minus1, 0, self.cfg.d_inner)?;
-        let z = xz.narrow(D::Minus1, self.cfg.d_inner, self.cfg.d_inner)?;
+        let x = xz.narrow(D::Minus1, 0, self.cfg.d_inner)?.contiguous()?;
+        let z = xz.narrow(D::Minus1, self.cfg.d_inner, self.cfg.d_inner)?.contiguous()?;
 
         // 3. Update conv_state and compute 1D causal conv
         let x_window = Tensor::cat(&[&state.conv_state, &x], 1)?; // (b_sz, d_conv, d_inner)
@@ -226,13 +226,13 @@ impl MambaBlock {
 
         // 4. Selective Projections
         let x_dbl = self.x_proj.forward(&x_conv)?;
-        let dt_raw = x_dbl.narrow(D::Minus1, 0, self.cfg.dt_rank)?;
-        let b_proj = x_dbl.narrow(D::Minus1, self.cfg.dt_rank, self.cfg.d_state)?;
+        let dt_raw = x_dbl.narrow(D::Minus1, 0, self.cfg.dt_rank)?.contiguous()?;
+        let b_proj = x_dbl.narrow(D::Minus1, self.cfg.dt_rank, self.cfg.d_state)?.contiguous()?;
         let c_proj = x_dbl.narrow(
             D::Minus1,
             self.cfg.dt_rank + self.cfg.d_state,
             self.cfg.d_state,
-        )?;
+        )?.contiguous()?;
 
         let dt = softplus(&self.dt_proj.forward(&dt_raw)?)?;
 

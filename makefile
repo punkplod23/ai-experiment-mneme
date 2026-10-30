@@ -42,6 +42,13 @@ L ?= 100
 chat:
 	$(EXE) chat "$(S)" --len $(L)
 
+# GPU-Accelerated Commands (handles MSVC and CUDA paths automatically)
+gpu-init:
+	powershell -NoProfile -ExecutionPolicy Bypass -File .\run_gpu.ps1 ingest $(BOOKS_DIR) --epochs 3 --batch-size 32
+
+gpu-chat:
+	powershell -NoProfile -ExecutionPolicy Bypass -File .\run_gpu.ps1 chat "$(S)" --len $(L)
+
 # Monitoring the health of the Mamba state
 status:
 	@echo --- Sovereign Brain Metrics ---
