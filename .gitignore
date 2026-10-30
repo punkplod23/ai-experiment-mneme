@@ -4,6 +4,5 @@
 /sovereign_vault
 /dictionart
 /Cargo.lock
-/dictionart
 __pycache__/
 *.safetensors
