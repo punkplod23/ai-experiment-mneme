@@ -1,0 +1,10 @@
+{
+  "d_model": 256,
+  "d_inner": 512,
+  "d_state": 32,
+  "d_conv": 4,
+  "dt_rank": 16,
+  "num_layers": 4,
+  "vocab_size": 2048,
+  "chunk_size": 256
+}
